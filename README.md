@@ -14,8 +14,6 @@ The **Customer Service** is a Spring Boot microservice responsible for customer 
 
 ---
 
----
-
 ## 📦 ER
 
 ![ER Diagram](https://github.com/Raghul-18/customer-service/blob/master/ER-POS.PNG?raw=true)
