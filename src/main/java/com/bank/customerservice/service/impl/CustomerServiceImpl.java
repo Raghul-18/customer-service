@@ -24,7 +24,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse register(CustomerRegistrationRequest request) {
+        // Add this logging BEFORE mapping
+        System.out.println(">>> REQUEST DATA:");
+        System.out.println(">>> Request FullName = " + request.getFullName());
+        System.out.println(">>> Request Phone    = " + request.getPhone());
+        System.out.println(">>> Request Aadhaar  = " + request.getAadhaar());
+
         Customer customer = customerMapper.toEntity(request);
+
+        // Your existing logging
+        System.out.println(">>> MAPPED CUSTOMER: " + customer);
+        System.out.println(">>> Full Name = " + customer.getFullName());
+        System.out.println(">>> Phone     = " + customer.getPhone());
+        System.out.println(">>> Aadhaar   = " + customer.getAadhaar());
+
         customer.setKycStatus(KycStatus.PENDING);
         customer.setRegisteredAt(LocalDateTime.now());
         Customer saved = customerRepository.save(customer);

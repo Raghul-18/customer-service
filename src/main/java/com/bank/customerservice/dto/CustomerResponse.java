@@ -22,5 +22,5 @@ public class CustomerResponse {
     private String aadhaar;
     private KycStatus kycStatus;
     private LocalDateTime registeredAt;
-    private String message;
+    private String message; // For success/error messages
 }

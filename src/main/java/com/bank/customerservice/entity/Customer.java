@@ -39,7 +39,13 @@ public class Customer {
     private String aadhaar;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private KycStatus kycStatus = KycStatus.PENDING;
 
     private LocalDateTime registeredAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.registeredAt = LocalDateTime.now();
+    }
 }

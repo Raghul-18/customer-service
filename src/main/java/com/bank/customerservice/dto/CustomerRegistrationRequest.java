@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class CustomerRegistrationRequest {
 
     @NotBlank
+    // Remove @JsonProperty if JSON field is already "fullName"
     private String fullName;
 
     @NotBlank

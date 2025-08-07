@@ -18,6 +18,7 @@ spring:
 
   flyway:
     enabled: true
+    table: flyway_schema_history_customer_service
     locations: classpath:db/migration
     baseline-on-migrate: true
     validate-on-migrate: true
@@ -30,6 +31,9 @@ springdoc:
     path: /swagger-ui.html
     operationsSorter: method
 
+jwt:
+  secret: bXlfc3VwZXJfc2VjdXJlX3Rlc3Rfa2V5XzEyMzQ1Njc4OTA=  # Base64 of 32-byte key
+  expiration-ms: 3600000
 
 logging:
   level:
