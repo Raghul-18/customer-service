@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -70,4 +71,31 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
         return customerMapper.toDto(customer);
     }
+
+    @Override
+    public List<CustomerResponse> getAllCustomers() {
+        return customerRepository.findAll().stream()
+                .map(customer -> customerMapper.toDto(customer))
+                .toList();
+    }
+
+    @Override
+    public CustomerResponse getCustomerById(Long customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        return customerMapper.toDto(customer);
+    }
+
+    @Override
+    public CustomerResponse updateKycStatus(Long customerId, KycStatusUpdateRequest request) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+
+        customer.setKycStatus(request.getKycStatus());
+
+        Customer updated = customerRepository.save(customer);
+        return customerMapper.toDto(updated, request.getMessage() != null ? request.getMessage() : "KYC status updated");
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.bank.customerservice.service;
 
 import com.bank.customerservice.dto.*;
+import java.util.List;
 
 public interface CustomerService {
 
@@ -11,4 +12,11 @@ public interface CustomerService {
     CustomerResponse update(Long customerId, CustomerUpdateRequest request);
 
     CustomerResponse getStatus(Long customerId);
+
+    List<CustomerResponse> getAllCustomers();
+
+    CustomerResponse getCustomerById(Long customerId);
+
+    CustomerResponse updateKycStatus(Long customerId, KycStatusUpdateRequest request);
+
 }

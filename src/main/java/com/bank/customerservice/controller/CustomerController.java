@@ -41,6 +41,14 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getStatus(customerId));
     }
 
+    // INTERNAL: Update KYC status (used by KYC Service)
+    @PutMapping("/{customerId}/kyc-status")
+    public ResponseEntity<CustomerResponse> updateKycStatus(
+            @PathVariable Long customerId,
+            @Valid @RequestBody KycStatusUpdateRequest request) {
+        return ResponseEntity.ok(customerService.updateKycStatus(customerId, request));
+    }
+
     // 🔐 Access control method
     private void validateAccess(Long requestedCustomerId) {
         AuthenticatedUser currentUser = JwtAuthInterceptor.getCurrentUser();
