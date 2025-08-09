@@ -25,27 +25,34 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    // Explicit constructor instead of @RequiredArgsConstructor
     public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
 
     @Override
-    public CustomerResponse register(CustomerRegistrationRequest request) {
-        // Add this logging BEFORE mapping
+    public CustomerResponse register(CustomerRegistrationRequest request, Long userId) {
+        // ✅ Check if user already has a customer record
+        if (customerRepository.existsByUserId(userId)) {
+            throw new IllegalStateException("Customer already exists for this user");
+        }
+
         System.out.println(">>> REQUEST DATA:");
         System.out.println(">>> Request FullName = " + request.getFullName());
         System.out.println(">>> Request Phone    = " + request.getPhone());
         System.out.println(">>> Request Aadhaar  = " + request.getAadhaar());
+        System.out.println(">>> JWT UserId       = " + userId); // ✅ Add this log
 
         Customer customer = customerMapper.toEntity(request);
 
-        // Your existing logging
+        // 🔑 SET THE USER ID from JWT token
+        customer.setUserId(userId);
+
         System.out.println(">>> MAPPED CUSTOMER: " + customer);
         System.out.println(">>> Full Name = " + customer.getFullName());
         System.out.println(">>> Phone     = " + customer.getPhone());
         System.out.println(">>> Aadhaar   = " + customer.getAadhaar());
+        System.out.println(">>> User ID   = " + customer.getUserId()); // ✅ Add this log
 
         customer.setKycStatus(KycStatus.PENDING);
         customer.setRegisteredAt(LocalDateTime.now());
@@ -105,12 +112,8 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.toDto(updated, request.getMessage() != null ? request.getMessage() : "KYC status updated");
     }
 
-    // ======= NEW METHODS FOR USER-CUSTOMER RESOLUTION =======
+    // ======= USER-CUSTOMER RESOLUTION METHODS =======
 
-    /**
-     * Get customer ID for a given user ID
-     * This is needed for KYC authorization
-     */
     @Override
     public Long getCustomerIdByUserId(Long userId) {
         log.debug("🔍 Looking up customerId for userId: {}", userId);
@@ -126,18 +129,12 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
-    /**
-     * Get customer entity by user ID
-     */
     @Override
     public Customer getCustomerByUserId(Long userId) {
         log.debug("🔍 Looking up customer entity for userId: {}", userId);
         return customerRepository.findByUserId(userId).orElse(null);
     }
 
-    /**
-     * Check if a user ID has an associated customer record
-     */
     @Override
     public boolean existsByUserId(Long userId) {
         return customerRepository.existsByUserId(userId);

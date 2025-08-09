@@ -19,7 +19,11 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<CustomerResponse> register(@Valid @RequestBody CustomerRegistrationRequest request) {
-        return ResponseEntity.ok(customerService.register(request));
+        // 🔐 Extract userId from JWT token
+        AuthenticatedUser currentUser = JwtAuthInterceptor.getCurrentUser();
+        Long userId = currentUser.getUserId();
+
+        return ResponseEntity.ok(customerService.register(request, userId));
     }
 
     @GetMapping("/{customerId}")

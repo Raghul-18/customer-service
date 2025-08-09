@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface CustomerService {
 
+    // ✅ Updated register method with userId parameter
+    CustomerResponse register(CustomerRegistrationRequest request, Long userId);
+
     // Existing methods
-    CustomerResponse register(CustomerRegistrationRequest request);
     CustomerResponse getById(Long customerId);
     CustomerResponse update(Long customerId, CustomerUpdateRequest request);
     CustomerResponse getStatus(Long customerId);

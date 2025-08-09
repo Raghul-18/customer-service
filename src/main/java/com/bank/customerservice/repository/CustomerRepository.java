@@ -9,13 +9,13 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    // Existing methods (if any)
-    Optional<Customer> findByEmail(String email);
-    Optional<Customer> findByPhone(String phone);
-    Optional<Customer> findByAadhaar(String aadhaar);
-    Optional<Customer> findByPan(String pan);
-
-    // NEW: Methods for user-customer resolution
+    // ✅ Add these methods for userId-based operations
     Optional<Customer> findByUserId(Long userId);
     boolean existsByUserId(Long userId);
+
+    // Existing unique constraint checks
+    boolean existsByPhone(String phone);
+    boolean existsByEmail(String email);
+    boolean existsByPan(String pan);
+    boolean existsByAadhaar(String aadhaar);
 }
