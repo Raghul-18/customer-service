@@ -12,12 +12,18 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final JwtAuthInterceptor jwtAuthInterceptor;
 
+    public WebConfig(JwtAuthInterceptor jwtAuthInterceptor) {
+        this.jwtAuthInterceptor = jwtAuthInterceptor;
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthInterceptor)
-                .addPathPatterns("/api/customers/register") // ✅ Apply JWT to register endpoint
-                .addPathPatterns("/api/customers/{customerId}") // Existing protected endpoints
+                .addPathPatterns("/api/customers/register")
+                .addPathPatterns("/api/customers/{customerId}")
                 .addPathPatterns("/api/customers/{customerId}/**")
-                .addPathPatterns("/api/customers/admin/**"); // Admin endpoints
+                .addPathPatterns("/api/customers/admin/**")
+                .addPathPatterns("/api/customers/user/{userId}/customer-id") // NEW
+                .addPathPatterns("/api/customers/{customerId}/verify-ownership/{userId}"); // NEW
     }
 }

@@ -21,4 +21,5 @@ public interface CustomerService {
     Long getCustomerIdByUserId(Long userId);
     Customer getCustomerByUserId(Long userId);
     boolean existsByUserId(Long userId);
+    Customer getCustomerEntity(Long customerId);
 }
