@@ -18,6 +18,10 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
 
+    // ADD THIS: Link to User service
+    @Column(nullable = false, unique = true)
+    private Long userId;  // Reference to users.user_id
+
     @Column(nullable = false)
     private String fullName;
 

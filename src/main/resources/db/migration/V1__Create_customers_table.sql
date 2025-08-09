@@ -10,3 +10,10 @@ CREATE TABLE CUSTOMERS (
     kyc_status VARCHAR2(20) DEFAULT 'PENDING',
     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add userId column to CUSTOMERS table
+ALTER TABLE CUSTOMERS ADD user_id NUMBER(19) NOT NULL;
+
+-- Add unique constraint
+ALTER TABLE CUSTOMERS ADD CONSTRAINT uk_customers_user_id UNIQUE (user_id);
+

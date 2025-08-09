@@ -23,4 +23,7 @@ public class CustomerResponse {
     private KycStatus kycStatus;
     private LocalDateTime registeredAt;
     private String message; // For success/error messages
+
+    public void setMessage(String message) {
+    }
 }

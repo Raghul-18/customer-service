@@ -9,19 +9,27 @@ import com.bank.customerservice.repository.CustomerRepository;
 import com.bank.customerservice.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+
+    // Explicit constructor instead of @RequiredArgsConstructor
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+        this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
+    }
 
     @Override
     public CustomerResponse register(CustomerRegistrationRequest request) {
@@ -97,5 +105,41 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.toDto(updated, request.getMessage() != null ? request.getMessage() : "KYC status updated");
     }
 
+    // ======= NEW METHODS FOR USER-CUSTOMER RESOLUTION =======
 
+    /**
+     * Get customer ID for a given user ID
+     * This is needed for KYC authorization
+     */
+    @Override
+    public Long getCustomerIdByUserId(Long userId) {
+        log.debug("🔍 Looking up customerId for userId: {}", userId);
+        Optional<Customer> customer = customerRepository.findByUserId(userId);
+
+        if (customer.isPresent()) {
+            Long customerId = customer.get().getCustomerId();
+            log.debug("✅ Found customerId: {} for userId: {}", customerId, userId);
+            return customerId;
+        } else {
+            log.debug("❌ No customer found for userId: {}", userId);
+            return null;
+        }
+    }
+
+    /**
+     * Get customer entity by user ID
+     */
+    @Override
+    public Customer getCustomerByUserId(Long userId) {
+        log.debug("🔍 Looking up customer entity for userId: {}", userId);
+        return customerRepository.findByUserId(userId).orElse(null);
+    }
+
+    /**
+     * Check if a user ID has an associated customer record
+     */
+    @Override
+    public boolean existsByUserId(Long userId) {
+        return customerRepository.existsByUserId(userId);
+    }
 }
