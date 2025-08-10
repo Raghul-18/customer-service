@@ -26,12 +26,11 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
-        this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
-    }
-
-    // Remove the manual constructor - @RequiredArgsConstructor handles this
+    // ❌ REMOVE THIS MANUAL CONSTRUCTOR - @RequiredArgsConstructor handles this automatically
+    // public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    //     this.customerRepository = customerRepository;
+    //     this.customerMapper = customerMapper;
+    // }
 
     @Override
     public CustomerResponse register(CustomerRegistrationRequest request, Long userId) {

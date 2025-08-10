@@ -24,6 +24,8 @@ public class CustomerResponse {
     private LocalDateTime registeredAt;
     private String message; // For success/error messages
 
+    // Fix the setter method - Lombok @Data should handle this, but let's make it explicit
     public void setMessage(String message) {
+        this.message = message;
     }
 }
