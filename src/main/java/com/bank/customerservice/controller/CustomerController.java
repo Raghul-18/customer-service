@@ -1,7 +1,9 @@
 package com.bank.customerservice.controller;
 
 import com.bank.customerservice.dto.*;
+import com.bank.customerservice.entity.Customer;
 import com.bank.customerservice.exception.ResourceNotFoundException;
+import com.bank.customerservice.repository.CustomerRepository;
 import com.bank.customerservice.security.JwtAuthInterceptor;
 import com.bank.customerservice.util.AuthenticatedUser;
 import com.bank.customerservice.service.CustomerService;
@@ -10,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.bank.customerservice.dto.CustomerIdResponse;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -18,10 +19,9 @@ import com.bank.customerservice.dto.CustomerIdResponse;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    // Remove the manual constructor - @RequiredArgsConstructor handles this
 
     @PostMapping("/register")
     public ResponseEntity<CustomerResponse> register(@Valid @RequestBody CustomerRegistrationRequest request) {
@@ -73,6 +73,7 @@ public class CustomerController {
             throw new SecurityException("Access denied");
         }
     }
+
     @GetMapping("/user/{userId}/customer-id")
     public ResponseEntity<CustomerIdResponse> getCustomerIdByUserId(@PathVariable Long userId) {
         AuthenticatedUser currentUser = JwtAuthInterceptor.getCurrentUser();

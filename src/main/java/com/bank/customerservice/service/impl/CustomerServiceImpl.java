@@ -20,6 +20,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
@@ -29,6 +30,8 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
     }
+
+    // Remove the manual constructor - @RequiredArgsConstructor handles this
 
     @Override
     public CustomerResponse register(CustomerRegistrationRequest request, Long userId) {
@@ -138,5 +141,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean existsByUserId(Long userId) {
         return customerRepository.existsByUserId(userId);
+    }
+
+    @Override
+    public Customer getCustomerEntity(Long customerId) {
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + customerId));
     }
 }

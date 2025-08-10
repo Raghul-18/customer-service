@@ -12,9 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final JwtAuthInterceptor jwtAuthInterceptor;
 
-    public WebConfig(JwtAuthInterceptor jwtAuthInterceptor) {
-        this.jwtAuthInterceptor = jwtAuthInterceptor;
-    }
+    // Remove the manual constructor - @RequiredArgsConstructor handles this
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
