@@ -64,15 +64,18 @@ public class CustomerController {
         AuthenticatedUser currentUser = JwtAuthInterceptor.getCurrentUser();
 
         if ("ADMIN".equalsIgnoreCase(currentUser.getRole())) {
-            return; // Allow
+            return; // Allow admin to access any customer
         }
 
-        // Role = CUSTOMER, check match
-        String expectedUsername = "customer_" + requestedCustomerId;
-        if (!expectedUsername.equals(currentUser.getUsername())) {
-            throw new SecurityException("Access denied");
+        // Role = CUSTOMER, check if they own the customerId
+        Customer customer = customerRepository.findById(requestedCustomerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+
+        if (!customer.getUserId().equals(currentUser.getUserId())) {
+            throw new SecurityException("Access denied - you can only view your own status");
         }
     }
+
 
     @GetMapping("/user/{userId}/customer-id")
     public ResponseEntity<CustomerIdResponse> getCustomerIdByUserId(@PathVariable Long userId) {
