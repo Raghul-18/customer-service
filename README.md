@@ -2,23 +2,6 @@
 
 A Spring Boot microservice responsible for customer onboarding, profile management, and KYC status tracking within a secure banking platform. This service integrates with JWT-based authentication and event-driven architecture using Apache Kafka.
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Technology Stack](#technology-stack)
-- [Prerequisites](#prerequisites)
-- [Installation & Setup](#installation--setup)
-- [Configuration](#configuration)
-- [API Documentation](#api-documentation)
-- [Database Schema](#database-schema)
-- [Security Implementation](#security-implementation)
-- [Event-Driven Integration](#event-driven-integration)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Overview
 
 The Customer Service is a core component of the banking microservices ecosystem, providing comprehensive customer lifecycle management capabilities. It handles customer registration, profile updates, KYC status tracking, and integration with other banking services through secure APIs and event messaging.
